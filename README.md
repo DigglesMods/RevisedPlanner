@@ -39,4 +39,5 @@ but it is currently nowhere publicly available. Also, the moment of transition w
 the same place, idle gnomes not working at all for a while (until manually moved around), and maybe other issues.
 ## Combination with other mods
 Untested, but I expect this to fail for a lot of other mods, since this mod has a lot of changes so that the probability of a conflict is high.
-This mod will not work in combination with "CommandF9", because both will change the behavior of the F9 key.
+This mod is not fully compatible with "CommandF9", because both change the behavior of the F9 key: if CommandF9 is applied first
+(higher in the list of the DigglesModManager), only the F9 change of this mod (drop only material) is missing; otherwise CommandF9 has no effect.

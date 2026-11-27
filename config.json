@@ -22,9 +22,10 @@
 	"incompatibilities" : [
 		{
 			"id" : "CommandF9",
+			"type" : "warning",
 			"reason" : {
-				"en" : "Both mods change the behavior of the F9 key.",
-				"de" : "Beide Mods ändern das Verhalten der F9-Taste."
+				"en" : "Both mods change the behavior of the F9 key. If CommandF9 is applied first, only the F9 change of this mod (drop only material) is missing. Otherwise CommandF9 has no effect.",
+				"de" : "Beide Mods ändern das Verhalten der F9-Taste. Wird CommandF9 zuerst angewendet, fehlt nur die F9-Änderung dieser Mod (nur Material ablegen). Andernfalls hat CommandF9 keine Wirkung."
 			}
 		}
 	],
