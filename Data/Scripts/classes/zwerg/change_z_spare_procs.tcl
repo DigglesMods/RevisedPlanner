@@ -192,28 +192,6 @@ proc sparetime_ill_loop {} {
 $end
 $start
 $replace
-	if {![obj_valid $sparetime_current_place_ref]} {sparetime_checkin 0}
-	prod_guest addorder $sparetime_current_place_ref $sparetime_seat
-	set arzt [call_method $sparetime_current_place_ref get_worker]
-	if {$arzt == 0 } {
-		set patient 0
-	} else {
-		set patient [call_method $sparetime_current_place_ref get_patient]
-	}
-	if {[get_ref this] == $patient} { 
-		set todo [call_method $sparetime_current_place_ref get_current_todo]
-		switch $todo {
-$with
-	if {![obj_valid $sparetime_current_place_ref]} {sparetime_checkin 0}
-	prod_guest addorder $sparetime_current_place_ref $sparetime_seat
-	set arzt [call_method $sparetime_current_place_ref get_worker]
-	set patient [call_method $sparetime_current_place_ref get_patient]
-	if {[get_ref this] == $patient} { 
-		set todo [call_method $sparetime_current_place_ref get_current_todo]
-		switch $todo {
-$end
-$start
-$replace
 	sparetime_check_in 0
 }
 proc sparetime_ill_check {} {

@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+### Removed
+- removed the remaining bugfixes, which are part of the BugFix mod now. This mod no longer conflicts with the BugFix mod
+  (the order of both mods in the DigglesModManager does not matter anymore):
+- walk_near_item with configurable distance and its usage for putting down items
+- spare-time goal, double sleep quality mood loss, food leftovers and hospital fixes
+- production fixes of the hospital (patient died/invalid) and of the bed animation in the brothel
+
 ## [v0.2.1] - 2026-11-25
 ### Fixes
 - Fixed repairing of buildings.

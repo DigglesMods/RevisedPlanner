@@ -90,52 +90,6 @@ $with
 $end
 $start
 $replace
-
-// läuft in die Nähe eines Items (oder eines Punktes)
-
-proc walk_near_item {item radius {tolerance 0.1} {speedtype auto}} {
-	//log "WALK NEAR ITEM [get_objname this] pos: $item radius: $radius"
-	set thispos [get_pos this]
-
-$with
-
-// läuft in die Nähe eines Items (oder eines Punktes)
-
-proc walk_near_item {item radius {tolerance 0.1} {speedtype auto} {maxplus 2}} {
-	//log "WALK NEAR ITEM [get_objname this] pos: $item radius: $radius"
-	set thispos [get_pos this]
-
-$end
-$start
-$replace
-	}
-
-    // Position zum Hinlaufen ermitteln
-	set walkpos [vector_fix [get_place -center $itempos -nearpos $thispos -mindist $radius -circle [expr $radius +2] -except this]]
-	//log "$walkpos"
-	if {[lindex $walkpos 0]<0} {
-        // fehlgeschlagen - 2. Versuch ohne Materials
-		log "walk_near_item: get_place 1 failed"
-   		set walkpos [vector_fix [get_place -center $itempos -nearpos $thispos -mindist $radius -circle [expr $radius +2] -except this -materials false]]
-		//log "$walkpos"
-    	if {[lindex $walkpos 0]<0} {
-			log "walk_near_item: get_place 2 failed - last fallback is vector_fix!"
-$with
-	}
-
-    // Position zum Hinlaufen ermitteln
-	set walkpos [vector_fix [get_place -center $itempos -nearpos $thispos -mindist $radius -circle [expr $radius+$maxplus] -except this]]
-	//log "$walkpos"
-	if {[lindex $walkpos 0]<0} {
-        // fehlgeschlagen - 2. Versuch ohne Materials
-		log "walk_near_item: get_place 1 failed"
-   		set walkpos [vector_fix [get_place -center $itempos -nearpos $thispos -mindist $radius -circle [expr $radius+$maxplus] -except this -materials false]]
-		//log "$walkpos"
-    	if {[lindex $walkpos 0]<0} {
-			log "walk_near_item: get_place 2 failed - last fallback is vector_fix!"
-$end
-$start
-$replace
 		set walkfail_tasks ""
 		state_enable this
 	}
