@@ -1,10 +1,3 @@
-##nagelfar syntax lrem v x
-##nagelfar syntax lrep v x x
-##nagelfar syntax fincr v x
-
-# Meine Basis:
-#   183 breit, 48 hoch
-
 if {[in_class_def]} {
     method autoprodx_do {task} {
         autoprodx_do_proc $task
@@ -414,6 +407,7 @@ if {[in_class_def]} {
                 state_triggerfresh this work_dispatch
             }
             "bringprod" {
+                set prod_slot_class [lindex $task 6]
                 set current_worktask "bringprod"
                 set current_workplace $place
                 prod_change_muetze "transport"
@@ -423,6 +417,7 @@ if {[in_class_def]} {
                 prod_assignworker this $place
                 prod_gnome_last_workplace this $place
                 prod_gnome_state this transport [lindex $items 0] $place
+                set_prod_state $place 3 $prod_slot_class
 #                set_prodalloclock $place 1
 #                set_prodalloclock this 1
                 foreach item $items {
@@ -446,38 +441,48 @@ if {[in_class_def]} {
                     lappend current_worklist "if \{\[inv_find_obj this $item\]>=0\} \{prod_bringtoprod $item $place\} \{handle_pickupfail $item $place\}"
                 }
                 lappend current_worklist "set ::walkfail_tasks {}; expr 1"
+                lappend current_worklist "set_prod_state $place 0"
                 lappend current_worklist "call_method $place autoprod_stop"
-#log "list=$current_worklist" 0
+                #log "list=$current_worklist" 0
                 state_triggerfresh this work_dispatch
             }
             "invent" -
             "work" {
+                set prod_slot_class $items
                 if {$type == "work"} {
                     set muetze [get_class_category $items]
                     #if {$muetze == "none"} {log "ERROR: hat confusion"}
                     #log "X: fitting hat is $muetze"
                     prod_gnome_state this build $place $items
                     prod_change_muetze $muetze
-#log "set_objworkicons this [get_objclass $place] Hammer $items" 0
+                    #log "set_objworkicons this [get_objclass $place] Hammer $items" 0
                     set_objworkicons this [get_objclass $place] Hammer [string trim $items _]
+                    set new_state 2
                 } else {
                     prod_gnome_state this invent $place $items
                     set items Bp$items
                     set_objworkicons this question [get_objclass $place]
                     prod_change_muetze "erfinden"
+                    set new_state 1
                 }
                 set current_workclass $items
                 set current_worktask "work"
                 set current_workplace $place
-#                set place_pos [get_pos $place]
-#                if {[vector_dist $place_pos [get_pos this]] > 2.0} {
-#                    lappend current_worklist "walk_pos \"[vector_setz $place_pos 14.0]\"; expr 1"
-#                }
+                set place_pos [get_pos $place]
+                if {[vector_dist $place_pos [get_pos this]] > 2.0} {
+                    tasklist_add this "set ::walkfail_tasks {{log walkfail} {tasklist_clear this}}"
+                    tasklist_add this "walk_pos \"[vector_setz $place_pos 14.0]\""
+                    tasklist_add this "set ::walkfail_tasks {}"
+                }
+                tasklist_add this "set_prod_state $place $new_state $prod_slot_class"
+                tasklist_add this "if !\[get_energy $place\] \"tasklist_clear this ; set_prod_state $place 0\""
                 # prod_autobuild and other prod_* procs must not be in current_worklist!
                 # (doesn't work, because they overwrite current_worklist)
                 # prod_autobuild should not be called directly here!
                 # (doesn't quite work, because methods are called without using global namespace)
                 tasklist_add this "prod_autobuild $items $place"
+                ##nagelfar ignore Found constant * which is also a variable
+                tasklist_add this [list lappend current_worklist [list set_prod_state $place 0]]
                 if {![get_prod_switchmode $place]} {
                     ##nagelfar ignore Found constant * which is also a variable
                     tasklist_add this [list lappend current_worklist [list autoprod_reduce_workcount $place $items]]
@@ -544,6 +549,7 @@ if {[in_class_def]} {
                 } else {
                     #log "X: couldn't pick up [get_objname $place]" 0
                 }
+                tasklist_add this [list lappend current_worklist [list set_prod_state $place 0]]
             }
             "pack" {
                 set current_workplace $place
@@ -554,15 +560,22 @@ if {[in_class_def]} {
                 
                 set_prod_unpack $place 0
                 prod_autopack $place
+                tasklist_add this [list lappend current_worklist [list set_prod_state $place 0]]
             }
             "buildup" {
                 set current_workplace $place
                 set current_worktask "buildup"
                 prod_change_muetze "service"
-                set_objworkicons this arrow_up [get_objclass $place]
                 prod_gnome_state this unpack $place [get_pos $place]
                 
-                prod_autobuildup $place
+                if {[get_attrib $place atr_Hitpoints] < 1.0} {
+                    set_objworkicons this Hammer [get_objclass $place]
+                    prod_autorepair $place
+                } else {
+                    set_objworkicons this arrow_up [get_objclass $place]
+                    prod_autobuildup $place
+                }
+                tasklist_add this [list lappend current_worklist [list set_prod_state $place 0]]
             }
             "dig" {
                 global current_digpos idletimeout blacklist_digpos blacklist_digtime
@@ -594,6 +607,7 @@ if {[in_class_def]} {
             }
             default {
                 set current_worktask ""
+                #log "autoprod_x internal error: invalid task ($task)"
                 return 0
             }
         }
@@ -676,57 +690,3 @@ if {[in_class_def]} {
     #==================================================================================================
 
 }
-
-
-
-#Material liefern
-# EVT_AUTOPROD_WALK
-# EVT_AUTOPROD_PICKUP
-# EVT_AUTOPROD_WALK
-# EVT_AUTOPROD_TRANSFERPROD
-
-#Produzieren
-# EVT_AUTOPROD_WORKAT
-
-#Pilz umhauen
-# EVT_AUTOPROD_WALK
-# EVT_AUTOPROD_HARVEST
-
-#Auspacken
-# EVT_AUTOPROD_WALK
-# EVT_AUTOPROD_PICKUP
-# EVT_AUTOPROD_WALK
-# EVT_AUTOPROD_UNPACK
-#Auspackkoordinaten:
-# vector_sub [lindex [check_ghost_coll bbox this $item] 0] [get_negbbox $item]
-# ist schlechter: vector_mul [eval vector_add [check_ghost_coll bbox this 442]] 0.5
-
-#Energie
-# EVT_AUTOPROD_WALK
-# EVT_AUTOPROD_WORKAT
-
-
-# get_remaining_sparetime -> 0 während der Arbeit, sonst 6.0 .. 0.0
-# get_worktime next/laststart: springt um am Arbeitsanfang, absolute Stunden seit Spielanfang
-# get_worktime next/lastend:   springt um zum Freizeitanfang, absolute Stunden seit Spielanfang
-# start, end, duration: Anzahl Stunden pro Tag, fest
-# -> [gethours] - 150*[get_worktime $gnome laststart]
-
-# gnome_idle        -> Idle-Timer starten, bei 10s kann der Autoprod zuschlagen
-# prod_gnomeidle    -> Idle-Timer starten
-
-
-
-
-# Speed due to different transport mechanisms
-# Speed just by running:  1.6
-# Speed with Reithamster: 2.7
-# Speed with Hoverboard:  3.0
-# However, passing vertical shafts takes extra time. It takes more time the higher advanced
-# the transport is.
-# Assuming we have one Shaft every 75 units of length (VERY rough estimate), we have a 
-# resulting speed of:
-# Runnig: 1.5 ; Hamster: 2.1 ; Hoverboard: 3.0
-# Vertical Speed on a ladder is roughly 1.0
-# Vertical shafts are farther apart, so vertical movement requires additional horizontal
-# movement to the next shaft.
