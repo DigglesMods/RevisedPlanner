@@ -19,6 +19,16 @@
 		{ "id" : "BugFix" }
 	],
 	
+	"incompatibilities" : [
+		{
+			"id" : "CommandF9",
+			"reason" : {
+				"en" : "Both mods change the behavior of the F9 key.",
+				"de" : "Beide Mods ändern das Verhalten der F9-Taste."
+			}
+		}
+	],
+	
 	"messages" : [
 		{
 			"content" :  {

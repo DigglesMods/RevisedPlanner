@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 - The BugFix mod is declared as required dependency in the config file: the DigglesModManager (since version 1.4)
   activates it together with this mod and applies it first. Older versions of the DigglesModManager ignore it.
+- The CommandF9 mod is declared as incompatible in the config file: the DigglesModManager (since version 1.4) does not
+  allow to activate both mods at the same time. Older versions of the DigglesModManager ignore it.
 
 ### Removed
 - removed the remaining bugfixes, which are part of the BugFix mod now. This mod no longer conflicts with the BugFix mod
