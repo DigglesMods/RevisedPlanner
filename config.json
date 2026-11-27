@@ -15,6 +15,10 @@
         "wiki" : "https://github.com/saibantes/Wiggles.RevisedPlanner.mod/wiki"
     },
 	
+	"dependencies" : [
+		{ "id" : "BugFix" }
+	],
+	
 	"messages" : [
 		{
 			"content" :  {
