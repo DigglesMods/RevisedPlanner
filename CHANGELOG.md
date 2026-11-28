@@ -3,6 +3,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+### Added
+- The BugFix mod is declared as required dependency in the config file: the DigglesModManager (since version 1.4)
+  activates it together with this mod and applies it first. Older versions of the DigglesModManager ignore it.
+- The CommandF9 mod is declared as not fully compatible in the config file: the DigglesModManager (since version 1.4)
+  warns when both mods are activated, because both change the F9 key. Older versions of the DigglesModManager ignore it.
+
+### Removed
+- removed the remaining bugfixes, which are part of the BugFix mod now. This mod no longer conflicts with the BugFix mod
+  (the order of both mods in the DigglesModManager does not matter anymore):
+- walk_near_item with configurable distance and its usage for putting down items
+- spare-time goal, double sleep quality mood loss, food leftovers and hospital fixes
+- reservation flag and disappointment value set only locally on direct check-in at a spare-time place
+- production fixes of the hospital (patient died/invalid) and of the bed animation in the brothel
+
 ## [v0.2.1] - 2026-11-25
 ### Fixes
 - Fixed repairing of buildings.

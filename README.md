@@ -18,11 +18,13 @@ Items very(!) close to a border stone will be carried "home", if the stone isn't
 - F9 now drops only *material* items if the gnome has at least one such item in inventory. Otherwise, *everything* is dropped (like before).
 - Increased the range at which food items are considered to be *in* the kitchen from 7 to 10 (all three kitchens, but not the fire place).
 ## bugfixes
+All bugfixes of this mod were moved to the [BugFix mod](https://github.com/DigglesMods/BugFix), please install it together with this mod
+(the DigglesModManager activates it automatically since version 1.4):
 - Fixed that if many items are already on the ground, a gnome might fail to put down another item.
 - Fixed what looks like a typo and should affect how gnomes decide they are done with their current spare-time activity.
 - Reduced the mood loss from bad sleep quality (insufficient beds) by half. The same code was in here twice, so it seems this was not intentional (and thus I consider it a bug).
 - Fixed a bug where the hospital would no longer work after a patient died.
-- Partially fixed the animation at the hospital where the patient should lay in bed: Now they are laying, but hovering a bit above the bed ...
+- Fixed the animations at the hospital.
 ## unknown bugs
 - This mod was developed on the original CD version of the game from 2001, no idea if it works on the re-release on GoG/Steam.
 - Generally very little tested at all.
@@ -37,4 +39,5 @@ but it is currently nowhere publicly available. Also, the moment of transition w
 the same place, idle gnomes not working at all for a while (until manually moved around), and maybe other issues.
 ## Combination with other mods
 Untested, but I expect this to fail for a lot of other mods, since this mod has a lot of changes so that the probability of a conflict is high.
-This mod will not work in combination with "CommandF9", because both will change the behavior of the F9 key.
+This mod is not fully compatible with "CommandF9", because both change the behavior of the F9 key: if CommandF9 is applied first
+(higher in the list of the DigglesModManager), only the F9 change of this mod (drop only material) is missing; otherwise CommandF9 has no effect.

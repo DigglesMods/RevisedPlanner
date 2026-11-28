@@ -24,42 +24,6 @@ proc beamto_world_all {} {
 $end
 $start
 $replace
-	} else {
-		// putdown an bestimmter Position
-
-		tasklist_add this "set_objworkicons this arrow_down [get_objclass $item]; walk_near_item \{$pos\} 0.7"
-		tasklist_add this "rotate_towards \{$pos\}"
-		tasklist_add this "play_anim benda"
-		tasklist_add this "beam_from_inv_to_pos \{$item\} \{$pos\}"
-$with
-	} else {
-		// putdown an bestimmter Position
-
-		tasklist_add this "set_objworkicons this arrow_down [get_objclass $item]; walk_near_item \{$pos\} 0.7 0.1 auto 1.25"
-		tasklist_add this "rotate_towards \{$pos\}"
-		tasklist_add this "play_anim benda"
-		tasklist_add this "beam_from_inv_to_pos \{$item\} \{$pos\}"
-$end
-$start
-$replace
-		tasklist_addfront this "beam_from_inv_to_pos \{$item\} \{$pos\}"
-		tasklist_addfront this "play_anim benda"
-		tasklist_addfront this "rotate_towards \{$pos\}"
-		tasklist_addfront this "set_objworkicons this arrow_down [get_objclass $item]; walk_near_item \{$pos\} 0.7"
-	}
-
-	return true
-$with
-		tasklist_addfront this "beam_from_inv_to_pos \{$item\} \{$pos\}"
-		tasklist_addfront this "play_anim benda"
-		tasklist_addfront this "rotate_towards \{$pos\}"
-		tasklist_addfront this "set_objworkicons this arrow_down [get_objclass $item]; walk_near_item \{$pos\} 0.7 0.1 auto 1.25"
-	}
-
-	return true
-$end
-$start
-$replace
 //		}
 //	}
 	lock_item $item
