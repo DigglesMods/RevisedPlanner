@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
   (the order of both mods in the DigglesModManager does not matter anymore):
 - walk_near_item with configurable distance and its usage for putting down items
 - spare-time goal, double sleep quality mood loss, food leftovers and hospital fixes
+- reservation flag and disappointment value set only locally on direct check-in at a spare-time place
 - production fixes of the hospital (patient died/invalid) and of the bed animation in the brothel
 
 ## [v0.2.1] - 2026-11-25
